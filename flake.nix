@@ -13,6 +13,7 @@
   }: rec {
     nixosConfigurations = {
       zero2w = nixpkgs.lib.nixosSystem {
+        system = "aarch64-linux";
         modules = [
           "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
           ./zero2w.nix
