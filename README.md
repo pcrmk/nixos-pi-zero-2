@@ -4,23 +4,26 @@
 
 In particular, don't forget:
 - to configure your wifi
+- hostname
 - to add an admin user able to connect through ssh
 
 2. Build the image
 ```sh
-nix build -L .#nixosConfigurations.zero2w.config.system.build.sdImage
+nix \
+  --extra-experimental-features nix-command \
+  --extra-experimental-features flakes \
+  build -L .#nixosConfigurations.zero2w.config.system.build.sdImage
 ```
 
 3. Copy the image in your sd card
 
 ```sh
-DEVICE=/dev/disk5 # Whatever your sd card reader is
+DEVICE=/dev/sdb # Whatever your sd card reader is
 sudo dd if=result/sd-image/zero2.img of=$DEVICE bs=1M conv=fsync status=progress
 ```
 
 4. Boot your Zero
 5. Get your IP
-
 ```sh
 ifconfig wlan0
 ```
@@ -38,6 +41,7 @@ nix run github:serokell/deploy-rs .#zero2w -- --ssh-user $SSH_USER --hostname $Z
   - Note that `nixos-rebuild --target-host` would work instead of using `deploy-rs`. but as `nixos-rebuild` is not available on Darwin, I'm using `deploy-rs` that works both on NixOS and Darwin.
 - I still couldn't find a way to use `boot.kernelPackages = pkgs.linuxKernel.packages.linux_rpi3`. 
 - the `sdImage.extraFirmwareConfig` option is not ideal as it cannot update `config.txt` after it is created in the sd image.
+- Also tested and working on a Pi Zero WH.
 
 ## See also
 - [this issue](https://github.com/NixOS/nixpkgs/issues/216886)
