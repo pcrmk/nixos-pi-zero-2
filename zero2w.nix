@@ -58,6 +58,7 @@
 
   networking = {
     interfaces."wlan0".useDHCP = true;
+    hostName = "nixos";
     wireless = {
       enable = true;
       interfaces = ["wlan0"];
@@ -70,10 +71,8 @@
     };
   };
 
-  # Enable OpenSSH out of the box.
+  # enable ssh and ntp
   services.sshd.enable = true;
-
-  # NTP time sync.
   services.timesyncd.enable = true;
 
   # ! Change the following configuration
